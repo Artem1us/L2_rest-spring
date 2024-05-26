@@ -9,8 +9,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.function.RouterFunction
+import org.springframework.web.servlet.function.ServerResponse
+import org.springframework.web.servlet.function.body
 import org.springframework.web.servlet.function.router
-import ua.kpi.its.lab.rest.dto.ExampleDto
+import ua.kpi.its.lab.rest.dto.MagazineRequest
+import ua.kpi.its.lab.rest.svc.MagazineService
 import java.text.SimpleDateFormat
 
 @Configuration
@@ -28,11 +31,38 @@ class WebConfig : WebMvcConfigurer {
     }
 
     @Bean
-    fun functionalRoutes(): RouterFunction<*> = router {
+    fun functionalRoutes(magazineService: MagazineService): RouterFunction<*> = router {
+        fun wrapNotFoundError(call: () -> Any): ServerResponse {
+            return try {
+                val result = call()
+                ok().body(result)
+            }
+            catch (e: IllegalArgumentException) {
+                notFound().build()
+            }
+        }
+
         "/fn".nest {
-            "/example".nest {
+            "/magazines".nest {
                 GET("") {
-                    ok().body(ExampleDto("example"))
+                    ok().body(magazineService.read())
+                }
+                GET("/{id}") { req ->
+                    val id = req.pathVariable("id").toLong()
+                    wrapNotFoundError { magazineService.readById(id) }
+                }
+                POST("") { req ->
+                    val magazine = req.body<MagazineRequest>()
+                    ok().body(magazineService.create(magazine))
+                }
+                PUT("/{id}") { req ->
+                    val id = req.pathVariable("id").toLong()
+                    val magazine = req.body<MagazineRequest>()
+                    wrapNotFoundError { magazineService.updateById(id, magazine) }
+                }
+                DELETE("/{id}") { req ->
+                    val id = req.pathVariable("id").toLong()
+                    wrapNotFoundError { magazineService.deleteById(id)}
                 }
             }
 
