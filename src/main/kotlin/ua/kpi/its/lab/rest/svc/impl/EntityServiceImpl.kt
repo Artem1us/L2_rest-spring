@@ -29,15 +29,12 @@ class MagazineServiceImpl @Autowired constructor(
             writingDate = scientificArticle.writingDate,
             wordCount = scientificArticle.wordCount,
             numberLinks = scientificArticle.numberLinks,
-//            numberLinks = this.stringToDate(scientificArticle.numberLinks),
-//            chargeTime = scientificArticle.chargeTime,
             origLang = scientificArticle.origLang
         )
         var newMagazine = Magazine(
             name = magazine.name,
             topic = magazine.topic,
             language = magazine.language,
-//            establishDate = magazine.establishDate,
             establishDate = this.stringToDate(magazine.establishDate),
             issn = magazine.issn,
             price = this.stringToPrice(magazine.price),
@@ -78,7 +75,6 @@ class MagazineServiceImpl @Autowired constructor(
             author = scientificArticle.author
             writingDate = scientificArticle.writingDate
             wordCount = scientificArticle.wordCount
-//            manufactureDate = this@MagazineServiceImpl.stringToDate(scientificArticle.manufactureDate)
             numberLinks = scientificArticle.numberLinks
             origLang = scientificArticle.origLang
         }
@@ -96,7 +92,7 @@ class MagazineServiceImpl @Autowired constructor(
 
     private fun getMagazineById(id: Long): Magazine {
         return this.repository.findById(id).getOrElse {
-            throw IllegalArgumentException("Magazine not found by id = $id")
+            throw IllegalArgumentException("Magazine not found id = $id")
         }
     }
 
@@ -121,7 +117,6 @@ class MagazineServiceImpl @Autowired constructor(
             author = scientificArticle.author,
             writingDate = scientificArticle.writingDate,
             wordCount = scientificArticle.wordCount,
-            //manufactureDate = this.dateToString(scientificArticle.manufactureDate),
             numberLinks = scientificArticle.numberLinks,
             origLang = scientificArticle.origLang
         )

@@ -26,7 +26,6 @@ data class MagazineResponse(
 data class ScientificArticleRequest(
     var title: String,
     var author: String,
-//    var type: String,
     var writingDate: Int,
     var wordCount: String,
     var numberLinks: Double,
@@ -37,7 +36,6 @@ data class ScientificArticleResponse(
     var id: Long,
     var title: String,
     var author: String,
-//    var type: String,
     var writingDate: Int,
     var wordCount: String,
     var numberLinks: Double,

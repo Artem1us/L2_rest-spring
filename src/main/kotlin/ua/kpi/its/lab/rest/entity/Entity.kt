@@ -30,7 +30,7 @@ class Magazine(
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "scientificArticles_id", referencedColumnName = "id")
-    var scientificArticles: ScientificArticle
+    var scientificArticle: ScientificArticle
 ) : Comparable<Magazine> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,7 +42,7 @@ class Magazine(
     }
 
     override fun toString(): String {
-        return "Magazine(topic=$topic, establishDate=$establishDate, scientificArticles=$scientificArticles)"
+        return "Magazine(topic=$topic, establishDate=$establishDate, scientificArticles=$scientificArticle)"
     }
 }
 
